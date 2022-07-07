@@ -1,0 +1,607 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954233872458104,
+                    53.52226635550218,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S39.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954242227881899,
+                    53.52247688700763,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S46.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954243218628804,
+                    53.52269735106239,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S47.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95423986087658,
+                    53.52289427770444,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S48.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.9542247932187,
+                    53.523027920662855,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S49.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953991520467094,
+                    53.52073341786584,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S8.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953772013531331,
+                    53.52079534467833,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S10.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.9542430024262,
+                    53.52083158469898,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S9.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953981890664638,
+                    53.52087672661884,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S11.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954251092879327,
+                    53.520992586943095,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S14.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953968617549302,
+                    53.52100672454338,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S27.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953970284128292,
+                    53.521194686383126,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S29.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954053273875308,
+                    53.5232926738893,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S51.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954018296518699,
+                    53.52312976567711,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S50.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954244869594731,
+                    53.523182580240984,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S53.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954233839957856,
+                    53.52335954398768,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S53.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954127216979174,
+                    53.52340391187448,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S55.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954241311727442,
+                    53.52351027446019,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S54.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954240188329072,
+                    53.523601856245335,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S68.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954242790658935,
+                    53.52386654763137,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S66.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954125532500141,
+                    53.523993221683924,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S58.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95424886246904,
+                    53.524067045242646,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S65.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954129580409234,
+                    53.524198681865556,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S59.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954244566195982,
+                    53.52423276469523,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S64.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954132007141311,
+                    53.524343332023534,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S60.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.9542474579248,
+                    53.5243790068547,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S63.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954139273970274,
+                    53.52451679102418,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S61.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954246723956542,
+                    53.524552126472116,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S62.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954247747383416,
+                    53.521757927474795,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S26.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95425818808304,
+                    53.52188170331161,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S36.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95424325440399,
+                    53.52202682571118,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S37.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95426236537153,
+                    53.522155868583866,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S38.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954151241994458,
+                    53.52111672182522,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S66???.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95425268269072,
+                    53.52114341207158,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S15.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954255309177714,
+                    53.52129409072654,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S16.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954251411659753,
+                    53.52148819594268,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S20.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.95426278125488,
+                    53.5216372597813,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S23.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.954157873834456,
+                    53.521637785052036,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S24.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953938282913395,
+                    53.5215107307003,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S31.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953145144755242,
+                    53.52059044427381,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S1b.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953393350081596,
+                    53.520610717702226,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S2.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953358896010542,
+                    53.52066314813288,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S3.jpg"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.953561118202373,
+                    53.52072772832247,
+					2.5
+                ]
+            },
+            "properties": {
+                "name": "HK_S6.jpg"
+            }
+        }
+    ]
+}
