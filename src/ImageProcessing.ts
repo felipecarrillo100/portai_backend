@@ -6,6 +6,7 @@ import path from "path";
 
 import sharp, {ExtendOptions, Sharp} from "sharp";
 
+const scale_ratio = 0.5;
 
 interface InputData {
     filename: string;
@@ -168,7 +169,7 @@ class ImageProcessing {
     private static getThumb(req: Request, res: Response, data: InputData) {
         sharp(data.filename).metadata().then(metadata=> {
             if (metadata.height) {
-                const height = Math.round(metadata.height /10);
+                const height = Math.round(metadata.height * scale_ratio);
                 sharp(data.filename).toFormat('jpeg').resize({height}).toBuffer().then((buffer) => {
                     if(buffer) {
                         res.writeHead(200, {

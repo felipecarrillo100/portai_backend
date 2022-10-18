@@ -6,6 +6,9 @@ const AppConfig = {
     },
     tiles: {
         panoramic: "C:\\xampp\\htdocs\\panoramics\\tilesq168"
+    },
+    portPhotos: {
+        root: "C:\\german\\Wismar",
     }
 }
 
