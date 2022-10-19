@@ -163,6 +163,7 @@ class PortSurveillance {
             sharp(filepath).metadata().then(metadata=> {
                 if (metadata.height) {
                     const height = Math.round(metadata.height * scale_ratio);
+                  //  sharp(filepath).flatten({ background: { r: 255, g: 255, b: 255, alpha:0 } }).toFormat('png').resize({height}).toBuffer().then((buffer) => {
                     sharp(filepath).toFormat('png').resize({height}).toBuffer().then((buffer) => {
                         if(buffer) {
                             res.writeHead(200, {
