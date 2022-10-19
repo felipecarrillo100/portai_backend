@@ -7,15 +7,17 @@ const TableName = "Annotations";
 const sqlCreateTable =
     `CREATE TABLE IF NOT EXISTS ${TableName} (` +
     "   id INTEGER NOT NULL PRIMARY KEY," +
-    "   name VARCHAR(128) NOT NULL UNIQUE," +
+    "   dataset VARCHAR(128) NOT NULL ," +
     "   geometry VARCHAR(8162)," +
     "   properties VARCHAR(1024)" +
     ");"
 
-const sqlInsert = `INSERT INTO ${TableName} (name, geometry, properties) VALUES(?, ?, ?);`
+const sqlInsert = `INSERT INTO ${TableName} (dataset, geometry, properties) VALUES(?, ?, ?);`
 const sqlSelectByID = `SELECT * FROM ${TableName} WHERE id=?;`
-const sqlSelectByText = `SELECT * FROM ${TableName} WHERE name LIKE ?`
-const sqlUpdatebyID = `UPDATE ${TableName} SET name=?, geometry=?, properties=? WHERE id=?`;
+const sqlSelectByText = `SELECT * FROM ${TableName} WHERE dataset LIKE ?`
+const sqlSelectByExactMatch = `SELECT * FROM ${TableName} WHERE dataset=?`
+
+const sqlUpdatebyID = `UPDATE ${TableName} SET dataset=?, geometry=?, properties=? WHERE id=?`;
 
 class AnnotationsRepository {
     private db: Database;
@@ -39,7 +41,7 @@ class AnnotationsRepository {
 
     public add(annotation: Annotation) {
         return new Promise((resolve, reject)=>{
-            this.db.run(sqlInsert, [annotation.getName(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() )],(err)=>{
+            this.db.run(sqlInsert, [annotation.getDataset(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() )],(err)=>{
                 if (err) {
                     console.log(err);
                     reject();
@@ -59,7 +61,7 @@ class AnnotationsRepository {
                     if (row) {
                         const annotation = new Annotation();
                         annotation.setId(row.id);
-                        annotation.setName(row.name);
+                        annotation.setDataset(row.dataset);
                         annotation.setGeometry(JSON.parse(row.geometry));
                         annotation.setProperties(JSON.parse(row.properties));
                         resolve(annotation);
@@ -71,7 +73,7 @@ class AnnotationsRepository {
         })
     }
 
-    public query(search?: string) {
+    public queryLike(search?: string) {
         return new Promise<Annotation[]>((resolve, reject)=> {
             const searchText = search ? `%${search}%` : "%%";
             this.db.all(sqlSelectByText, [searchText], (err, rows) => {
@@ -83,7 +85,29 @@ class AnnotationsRepository {
                 const annotations = rows.map(row => {
                     const annotation = new Annotation();
                     annotation.setId(row.id);
-                    annotation.setName(row.name);
+                    annotation.setDataset(row.dataset);
+                    annotation.setGeometry(JSON.parse(row.geometry));
+                    annotation.setProperties(JSON.parse(row.properties));
+                    return annotation
+                })
+                resolve(annotations);
+            });
+        })
+    }
+
+    public query(search?: string) {
+        return new Promise<Annotation[]>((resolve, reject)=> {
+            const searchText = search ? search : "";
+            this.db.all(sqlSelectByExactMatch, [searchText], (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    reject();
+                    return;
+                }
+                const annotations = rows.map(row => {
+                    const annotation = new Annotation();
+                    annotation.setId(row.id);
+                    annotation.setDataset(row.dataset);
                     annotation.setGeometry(JSON.parse(row.geometry));
                     annotation.setProperties(JSON.parse(row.properties));
                     return annotation
@@ -96,7 +120,7 @@ class AnnotationsRepository {
     public replace(annotation: Annotation) {
         return new Promise((resolve, reject)=>{
             if (annotation.getId()) {
-                this.db.run(sqlUpdatebyID, [annotation.getName(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() ), annotation.getId()], (err)=>{
+                this.db.run(sqlUpdatebyID, [annotation.getDataset(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() ), annotation.getId()], (err)=>{
                     if (err) {
                         console.log(err);
                         reject();
@@ -115,7 +139,7 @@ class AnnotationsRepository {
         return new Promise((resolve, reject)=> {
             if (annotation.getId()) {
                 this.get(annotation.getId() as number).then((oldAnnotation) => {
-                    if (annotation.getName()) oldAnnotation.setName(annotation.getName());
+                    if (annotation.getDataset()) oldAnnotation.setDataset(annotation.getDataset());
                     if (annotation.getGeometry()) oldAnnotation.setGeometry(annotation.getGeometry());
                     if (annotation.getProperties()) {
                         if (annotation.getProperties().title) oldAnnotation.getProperties().title = annotation.getProperties().title;
@@ -124,7 +148,7 @@ class AnnotationsRepository {
                         if (annotation.getProperties().video) oldAnnotation.getProperties().meta = annotation.getProperties().video;
                         if (annotation.getProperties().picture) oldAnnotation.getProperties().meta = annotation.getProperties().picture;
                     }
-                    this.db.run(sqlUpdatebyID, [oldAnnotation.getName(), JSON.stringify(oldAnnotation.getGeometry()), JSON.stringify(oldAnnotation.getProperties()), annotation.getId()], (err) => {
+                    this.db.run(sqlUpdatebyID, [oldAnnotation.getDataset(), JSON.stringify(oldAnnotation.getGeometry()), JSON.stringify(oldAnnotation.getProperties()), annotation.getId()], (err) => {
                         if (err) {
                             console.log(err);
                             reject();

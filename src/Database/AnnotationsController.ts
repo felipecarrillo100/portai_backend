@@ -12,7 +12,7 @@ class AnnotationsController {
 
     addRoutes(app: Express, ) {
         app.get("/annotations", ((req, res) => {
-            this.annotationsRepository.query().then((annotations) => {
+            this.annotationsRepository.queryLike().then((annotations) => {
                 res.json(annotations)
             }).catch(()=>{
                 res.status(500);
@@ -20,7 +20,17 @@ class AnnotationsController {
             })
         }))
 
-        app.get("/annotations/:id", ((req, res) => {
+        app.get("/annotations/:dataset", ((req, res) => {
+            const dataset = req.params.dataset;
+            this.annotationsRepository.query(dataset).then((annotations) => {
+                res.json(annotations)
+            }).catch(()=>{
+                res.status(500);
+                res.json([])
+            })
+        }))
+
+        app.get("/annotations/:dataset/:id", ((req, res) => {
             const id = Number(req.params.id);
             this.annotationsRepository.get(id).then((annotations) => {
                 res.json(annotations)
@@ -30,9 +40,10 @@ class AnnotationsController {
             })
         }))
 
-        app.post("/annotations", ((req, res) => {
+        app.post("/annotations/:dataset", ((req, res) => {
+            const dataset = req.params.dataset;
             const annotation = new Annotation();
-            annotation.setName(req.body.name);
+            annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
             this.annotationsRepository.add(annotation).then(()=>{
@@ -44,10 +55,11 @@ class AnnotationsController {
             });
         }))
 
-        app.put("/annotations", ((req, res) => {
+        app.put("/annotations/:dataset", ((req, res) => {
+            const dataset = req.params.dataset;
             const annotation = new Annotation();
             annotation.setId(req.body.id);
-            annotation.setName(req.body.name);
+            annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
             this.annotationsRepository.replace(annotation).then(()=>{
@@ -59,10 +71,11 @@ class AnnotationsController {
             } );
         }))
 
-        app.patch("/annotations", ((req, res) => {
+        app.patch("/annotations/:dataset", ((req, res) => {
+            const dataset = req.params.dataset;
             const annotation = new Annotation();
             annotation.setId(req.body.id);
-            annotation.setName(req.body.name);
+            annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
             this.annotationsRepository.update(annotation).then(()=>{

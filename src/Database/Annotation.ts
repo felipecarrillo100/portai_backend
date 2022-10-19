@@ -8,7 +8,7 @@ interface AnnotationProperties {
 
 class Annotation {
     private id: number | null = null;
-    private name: string | null = null;
+    private dataset: string | null = null;
     private geometry: any| null = null;
     private properties: AnnotationProperties  = {
         title: null,
@@ -39,12 +39,12 @@ class Annotation {
         this.properties = value;
     }
 
-    getName(): string | null {
-        return this.name;
+    getDataset(): string | null {
+        return this.dataset;
     }
 
-    setName(value: string | null) {
-        this.name = value;
+    setDataset(value: string | null) {
+        this.dataset = value;
     }
 }
 
