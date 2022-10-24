@@ -1,12 +1,16 @@
-import {Express} from "express";
+import {Express, Request, Response} from "express";
+import url from 'url';
 
 import {AppConfig} from "./config";
 
 import sharp, {ExtendOptions, Sharp} from "sharp";
 var exif = require('exif-reader');
 
+const TILE_WIDTH = 1024;
+
 import {Dirent, readdir} from "fs";
 import * as fs from "fs";
+import * as querystring from "querystring";
 
 const scale_ratio = 1;
 
@@ -156,14 +160,11 @@ class PortSurveillance {
             })
         }))
 
-        app.get("/portInfo/:dataset/Orthomosaic/:orthophoto", ((req, res) => {
-            const dataset = req.params.dataset;
-            const orthophoto = req.params.orthophoto;
-            const filepath = AppConfig.portPhotos.root + "/" + dataset + "/Orthomosaic/" + orthophoto;
+        const Thumb = (filepath: string, req: Request, res: Response) => {
             sharp(filepath).metadata().then(metadata=> {
                 if (metadata.height) {
                     const height = Math.round(metadata.height * scale_ratio);
-                  //  sharp(filepath).flatten({ background: { r: 255, g: 255, b: 255, alpha:0 } }).toFormat('png').resize({height}).toBuffer().then((buffer) => {
+                    //  sharp(filepath).flatten({ background: { r: 255, g: 255, b: 255, alpha:0 } }).toFormat('png').resize({height}).toBuffer().then((buffer) => {
                     sharp(filepath).toFormat('png').resize({height}).toBuffer().then((buffer) => {
                         if(buffer) {
                             res.writeHead(200, {
@@ -183,6 +184,88 @@ class PortSurveillance {
                 res.status(400)
                 res.json(err);
             });
+        }
+
+        const GetInfo = (filepath: string, req: Request, res: Response) => {
+            PortSurveillance.getInfoVerticalData(filepath).then((tileInfo)=>{
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(tileInfo));
+            })
+        }
+        const GetTile = (params: any, req: Request, res: Response) => {
+            const data = {
+                filename: params.filename,
+                x:  params.x,
+                y:  params.y,
+            }
+            const returnBuffer = (buffer: Buffer) => {
+                if(buffer) {
+                    res.writeHead(200, {
+                        'Content-Type': "image/jpeg",
+                        'Content-Length': buffer.length
+                    });
+                    res.end(buffer);
+                }
+            }
+
+            PortSurveillance.getInfoVerticalData(data.filename).then(tileInfo=> {
+                if (tileInfo.height && tileInfo.width && typeof data.x !== "undefined" && typeof data.y !== "undefined") {
+                    if (data.x<tileInfo.columns && data.y<tileInfo.rows) {
+                        if (data.x===tileInfo.columns-1) {
+                            const right = tileInfo.totalWidth - tileInfo.width;
+                            const bottom = tileInfo.totalHeight - tileInfo.height;
+                            sharp(data.filename)
+                                .extract({
+                                    left: tileInfo.tileWidth*data.x, top: data.y*tileInfo.tileHeight,
+                                    width: tileInfo.tileWidth - right, height: tileInfo.tileHeight - bottom
+                                })
+                                .extend({
+                                    right,
+                                    bottom,
+                                    background: "#343034"
+                                })
+                                .toFormat('jpeg').toBuffer().then((buffer) => returnBuffer(buffer));
+                        } else {
+                            sharp(data.filename)
+                                .extract({  left: tileInfo.tileWidth*data.x, top: data.y*tileInfo.tileHeight,width: tileInfo.tileWidth, height: tileInfo.tileHeight})
+                                .toFormat('jpeg').toBuffer().then((buffer) => returnBuffer(buffer));
+                        }
+
+                    } else {
+                        const error = {
+                            error: "Out of range"
+                        }
+                        res.setHeader('Content-Type', 'application/json');
+                        res.status(400).end(JSON.stringify(error));
+                    }
+                }
+            });
+        }
+
+        app.get("/portInfo/:dataset/Orthomosaic/:orthophoto", ((req, res) => {
+            const standardURL = PortSurveillance.standardize(req.url);
+            const parsedQs = PortSurveillance.parseURLToObject(standardURL);
+            const service =  parsedQs.service ? parsedQs.service : "GetThumb";
+
+            const dataset = req.params.dataset;
+            let orthophoto = req.params.orthophoto.split('?')[0];
+            orthophoto = orthophoto.split('&')[0];
+            const filepath = AppConfig.portPhotos.root + "/" + dataset + "/Orthomosaic/" + orthophoto;
+
+            switch (service) {
+                case "GetInfo":
+                    GetInfo(filepath, req , res);
+                    break;
+                case "GetVTile":
+                    parsedQs.filename = filepath;
+                    GetTile(parsedQs, req , res);
+                    break;
+                case "GetThumb":
+                    Thumb(filepath, req , res);
+                    break;
+                default:
+                    Thumb(filepath, req , res);
+            }
         }))
 
         app.get("/portInfo/:dataset/:jsonfile.json", ((req, res) => {
@@ -276,6 +359,53 @@ class PortSurveillance {
                 res.json(err);
             });
         }))
+    }
+
+    static getInfoVerticalData(filename: string) {
+        return new Promise<VTilesInfo>((resolve)=>{
+            sharp(filename).metadata().then( (metadata) => {
+                if (metadata && metadata.width && metadata.height) {
+                    const tileWidth = TILE_WIDTH;
+                    const tileHeight = metadata.height;
+                    const totalHeight = tileHeight;
+                    const totalWidth = Math.ceil(metadata.width / tileWidth) * tileWidth;
+                    const info: VTilesInfo = {
+                        width: metadata.width,
+                        height: metadata.height,
+                        tileWidth,
+                        tileHeight,
+                        totalWidth,
+                        totalHeight,
+                        rows: 1,
+                        columns: totalWidth / tileWidth,
+                        levelCount: 1,
+                    }
+                    resolve(info);
+                }
+            });
+        })
+    }
+
+    static standardize (urlInput: string) {
+        const index1 = urlInput.indexOf("?");
+        const index2 = urlInput.indexOf("&");
+        if (index1 !== -1 && index1 < index2) {
+            return urlInput;
+        } else {
+            if (index2>-1) {
+                const urlOut = urlInput.replace("&", "?")
+                return urlOut;
+            } else {
+                return urlInput;
+            }
+        }
+        return urlInput;
+    }
+    static parseURLToObject(urlIn: string) {
+        const urlStandard = PortSurveillance.standardize(urlIn);
+        let parsedUrl = url.parse(urlStandard);
+        let parsedQs = querystring.parse(parsedUrl.query ? parsedUrl.query :"") ;
+        return parsedQs;
     }
 
 
