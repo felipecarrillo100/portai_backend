@@ -14,6 +14,8 @@ const sqlCreateTable =
 
 const sqlInsert = `INSERT INTO ${TableName} (dataset, geometry, properties) VALUES(?, ?, ?);`
 const sqlSelectByID = `SELECT * FROM ${TableName} WHERE id=?;`
+const sqlDeleteByID = `DELETE FROM ${TableName} WHERE id=?;`
+const sqlDeleteByByExactMatch = `DELETE FROM ${TableName} WHERE dataset=?;`
 const sqlSelectByText = `SELECT * FROM ${TableName} WHERE dataset LIKE ?`
 const sqlSelectByExactMatch = `SELECT * FROM ${TableName} WHERE dataset=?`
 
@@ -40,14 +42,14 @@ class AnnotationsRepository {
     }
 
     public add(annotation: Annotation) {
-        return new Promise((resolve, reject)=>{
-            this.db.run(sqlInsert, [annotation.getDataset(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() )],(err)=>{
+        return new Promise<number>((resolve, reject)=>{
+            this.db.run(sqlInsert, [annotation.getDataset(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() )],function (err){
                 if (err) {
                     console.log(err);
                     reject();
                     return;
                 }
-                resolve(true);
+                resolve(this.lastID);
             });
         })
     }
@@ -68,6 +70,30 @@ class AnnotationsRepository {
                     } else {
                         reject(400);
                     }
+                }
+            });
+        })
+    }
+
+    public delete(annotationID: number) {
+        return new Promise<boolean>((resolve, reject)=> {
+            this.db.get(sqlDeleteByID, [annotationID], (err, row) => {
+                if (err) {
+                    reject(500);
+                } else {
+                    resolve(true);
+                }
+            });
+        })
+    }
+
+    public deleteDataset(name: string) {
+        return new Promise<boolean>((resolve, reject)=> {
+            this.db.get(sqlDeleteByByExactMatch, [name], (err, row) => {
+                if (err) {
+                    reject(500);
+                } else {
+                    resolve(true);
                 }
             });
         })
@@ -118,7 +144,7 @@ class AnnotationsRepository {
     }
 
     public replace(annotation: Annotation) {
-        return new Promise((resolve, reject)=>{
+        return new Promise<number|string>((resolve, reject)=>{
             if (annotation.getId()) {
                 this.db.run(sqlUpdatebyID, [annotation.getDataset(), JSON.stringify(annotation.getGeometry()), JSON.stringify(annotation.getProperties() ), annotation.getId()], (err)=>{
                     if (err) {
@@ -126,7 +152,7 @@ class AnnotationsRepository {
                         reject();
                         return;
                     }
-                    resolve(true);
+                    resolve(annotation.getId() as any);
                 })
             } else {
                 reject();
@@ -136,7 +162,7 @@ class AnnotationsRepository {
     }
 
     public update(annotation: Annotation) {
-        return new Promise((resolve, reject)=> {
+        return new Promise<number|string>((resolve, reject)=> {
             if (annotation.getId()) {
                 this.get(annotation.getId() as number).then((oldAnnotation) => {
                     if (annotation.getDataset()) oldAnnotation.setDataset(annotation.getDataset());
@@ -154,7 +180,7 @@ class AnnotationsRepository {
                             reject();
                             return;
                         }
-                        resolve(true);
+                        resolve(annotation.getId() as any);
                     })
                 })
             } else {

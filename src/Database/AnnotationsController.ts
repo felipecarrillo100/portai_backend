@@ -40,15 +40,37 @@ class AnnotationsController {
             })
         }))
 
+        app.delete("/annotations/:dataset/:id", ((req, res) => {
+            const id = Number(req.params.id);
+            this.annotationsRepository.delete(id).then((success) => {
+                res.status(200);
+                res.json(success)
+            }, (code: number)=>{
+                res.status(code);
+                res.json([])
+            })
+        }))
+
+        app.delete("/annotations/:dataset", ((req, res) => {
+            const dataset = req.params.dataset;
+            this.annotationsRepository.deleteDataset(dataset).then((success) => {
+                res.status(200);
+                res.json(success)
+            }, (code: number)=>{
+                res.status(code);
+                res.json([])
+            })
+        }))
+
         app.post("/annotations/:dataset", ((req, res) => {
             const dataset = req.params.dataset;
             const annotation = new Annotation();
             annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
-            this.annotationsRepository.add(annotation).then(()=>{
+            this.annotationsRepository.add(annotation).then((id: number)=>{
                 res.status(200);
-                res.json([]);
+                res.json(id);
             }).catch((err)=>{
                 res.status(409);
                 res.json([]);
@@ -62,9 +84,9 @@ class AnnotationsController {
             annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
-            this.annotationsRepository.replace(annotation).then(()=>{
+            this.annotationsRepository.replace(annotation).then((id: number|string)=>{
                 res.status(200);
-                res.json([]);
+                res.json(id);
             }, (err)=>{
                 res.status(409);
                 res.json([]);
@@ -78,9 +100,9 @@ class AnnotationsController {
             annotation.setDataset(dataset);
             annotation.setGeometry(req.body.geometry);
             annotation.setProperties(req.body.properties);
-            this.annotationsRepository.update(annotation).then(()=>{
+            this.annotationsRepository.update(annotation).then((id: number|string)=>{
                 res.status(200);
-                res.json([]);
+                res.json(id);
             }).catch((err)=>{
                 res.status(409);
                 res.json([]);
