@@ -8,7 +8,7 @@ const AppConfig = {
         panoramic: "C:\\xampp\\htdocs\\panoramics\\tilesq168"
     },
     portPhotos: {
-        root: "C:\\german\\Wismar",
+        root: "C:\\german\\ProjectFolder",
     }
 }
 

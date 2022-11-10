@@ -211,20 +211,33 @@ class PortSurveillance {
             PortSurveillance.getInfoVerticalData(data.filename).then(tileInfo=> {
                 if (tileInfo.height && tileInfo.width && typeof data.x !== "undefined" && typeof data.y !== "undefined") {
                     if (data.x<tileInfo.columns && data.y<tileInfo.rows) {
-                        if (data.x===tileInfo.columns-1) {
+                        if (data.x>=tileInfo.columns-1) {
                             const right = tileInfo.totalWidth - tileInfo.width;
                             const bottom = tileInfo.totalHeight - tileInfo.height;
+                            // Seems to help alleviate bug when chaining sharp: extract+extend.
                             sharp(data.filename)
                                 .extract({
                                     left: tileInfo.tileWidth*data.x, top: data.y*tileInfo.tileHeight,
                                     width: tileInfo.tileWidth - right, height: tileInfo.tileHeight - bottom
-                                })
-                                .extend({
-                                    right,
-                                    bottom,
-                                    background: "#343034"
-                                })
-                                .toFormat('jpeg').toBuffer().then((buffer) => returnBuffer(buffer));
+                                }).toFormat('jpeg').toBuffer().then((intermediateBuffer) => {
+                                sharp(intermediateBuffer).extend({
+                                        right,
+                                        bottom,
+                                        background: "#1a1a1a"
+                                    }).toFormat('jpeg').toBuffer().then((buffer) => returnBuffer(buffer));
+                            });
+
+                            // sharp(data.filename)
+                            //     .extract({
+                            //         left: tileInfo.tileWidth*data.x, top: data.y*tileInfo.tileHeight,
+                            //         width: tileInfo.tileWidth - right, height: tileInfo.tileHeight - bottom
+                            //     })
+                            //     .extend({
+                            //         right,
+                            //         bottom,
+                            //         background: "#ff0000"
+                            //     })
+                            //     .toFormat('jpeg').toBuffer().then((buffer) => returnBuffer(buffer));
                         } else {
                             sharp(data.filename)
                                 .extract({  left: tileInfo.tileWidth*data.x, top: data.y*tileInfo.tileHeight,width: tileInfo.tileWidth, height: tileInfo.tileHeight})
